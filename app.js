@@ -1,13 +1,39 @@
-const send_btn = document.getElementById('send_message');
+// send message function
+function sendMessage(){
+    let messageField = document.getElementById('write_message');
+    let message = messageField.value;
+    createElement(message, 'owner-message', true);
+    replyAfterMessage();
+    messageField.value = '';
+};
 
-send_btn.addEventListener('click', function(){
-    let message = document.getElementById('write_message').value;
-    createElement(message);
-    replyUfterMessage();
-    message = '';
-});
+// create message element function
+function createElement(value, messageClass, ownMessage){
+    const div = document.createElement('div');
+    div.classList.add(messageClass);
+    const myMessage = `
+    <p>${value}</p>
+    <div class="user_profile_img">
+    <img src="image/user.png">
+    </div>`;
+    const friendMessage = `
+    <div class="user_profile_img">
+    <img src="image/mahian.jpg">
+    </div>
+    <p>${value}</p>`;
+    let message = '';
+    if(ownMessage === true){
+        message = myMessage;
+    }else{
+        message = friendMessage;
+    }
+    div.innerHTML = message;
+    document.querySelector('.chat-field').appendChild(div);
+    return div;
+}
 
-function replyUfterMessage(){
+// reply message and set reply delay function
+function replyAfterMessage(){
     let message = document.getElementById('write_message').value;
     let reply = '';
     if(message.includes('name')){
@@ -20,36 +46,6 @@ function replyUfterMessage(){
         reply = 'Please include hi/name/are you/ and say something';
     }
     setTimeout(function(){
-        createFriendElement(reply);
+        createElement(reply, 'friend-message', false);
    }, 2000);
-}
-function createElement(value){
-    let div = document.createElement('div');
-    div.classList.add('owner-message');
-    let p = document.createElement('p');
-    p.innerText = value;
-    let user_profile_img = document.createElement('div');
-    user_profile_img.classList.add('user_profile_img');
-    let img = document.createElement('img');
-    img.src = 'image/user.png';
-    user_profile_img.appendChild(img);
-    div.appendChild(p);
-    div.appendChild(user_profile_img);
-    document.querySelector('.chat-field').appendChild(div);
-    return div;
-}
-
-function createFriendElement(reply){
-    let div = document.createElement('div');
-    div.classList.add('friend-message');
-    let p = document.createElement('p');
-    p.innerText = reply;
-    let user_profile_img = document.createElement('div');
-    user_profile_img.classList.add('user_profile_img');
-    let img = document.createElement('img');
-    img.src = 'image/mahian.jpg';
-    user_profile_img.appendChild(img);
-    div.appendChild(user_profile_img);
-    div.appendChild(p);
-    document.querySelector('.chat-field').appendChild(div);
 }
